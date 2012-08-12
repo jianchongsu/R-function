@@ -9,5 +9,5 @@ birth=as.Date(min(D1,D2),"%m/%d/%y")
    now=as.Date(max(D1,D2),"%m/%d/%y")
    births=seq(from=birth,to=now,by="1 year")
    list(days=abs(D2-D1),birthweek=weekdays(births))
-
+#format(Sys.Date(), "%m/%d/%y")
    }

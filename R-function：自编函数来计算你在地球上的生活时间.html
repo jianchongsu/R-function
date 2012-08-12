@@ -217,7 +217,7 @@ hljs.initHighlightingOnLoad();
 </code></pre>
 
 <pre><code>## $days
-## Time difference of 11695 days
+## Time difference of 11696 days
 ## 
 ## $birthweek
 ##  [1] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot;
@@ -254,6 +254,86 @@ day(&quot;08/04/80&quot;, &quot;08/04/90&quot;)
 <li>将输入项的其中一个改成默认为今天的日期，使只输入一个出生日期就可以得到我们想要的结果；</li>
 <li>如何可以直接输入1998年而不是必须写成98年，这个还有待解决。</li>
 </ul>
+
+<h2>(2012.8.12)补充改进</h2>
+
+<p>如果我将自编函数</p>
+
+<pre><code>function(d1,d2, &quot;%m/%d/%y&quot;))
+</code></pre>
+
+<p>改成</p>
+
+<pre><code>function(d1,d2=format(Sys.Date(), &quot;%m/%d/%y&quot;))
+</code></pre>
+
+<p>就可以解决需要改进的第一个地方了，<strong>Keep Moving！</strong></p>
+
+<h3>示例：</h3>
+
+<p><strong>先运行下程序</strong></p>
+
+<pre><code class="r">day = function(d1, d2 = format(Sys.Date(), &quot;%m/%d/%y&quot;)) {
+    d1 = as.character(d1)
+    d2 = as.character(d2)
+    D1 = as.Date(d1, &quot;%m/%d/%y&quot;)
+    D2 = as.Date(d2, &quot;%m/%d/%y&quot;)
+    abs(D2 - D1)
+    birth = as.Date(min(D1, D2), &quot;%m/%d/%y&quot;)
+    now = as.Date(max(D1, D2), &quot;%m/%d/%y&quot;)
+    births = seq(from = birth, to = now, by = &quot;1 year&quot;)
+    list(days = abs(D2 - D1), birthweek = weekdays(births))
+
+}
+</code></pre>
+
+<p><strong>举例</strong></p>
+
+<pre><code class="r">day(&quot;08/04/80&quot;)
+</code></pre>
+
+<pre><code>## $days
+## Time difference of 11696 days
+## 
+## $birthweek
+##  [1] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot;
+##  [8] &quot;星期二&quot; &quot;星期四&quot; &quot;星期五&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期二&quot; &quot;星期三&quot;
+## [15] &quot;星期四&quot; &quot;星期五&quot; &quot;星期日&quot; &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期五&quot;
+## [22] &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期五&quot; &quot;星期六&quot;
+## [29] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot;
+## 
+</code></pre>
+
+<pre><code class="r"># 今天是12年8月12日
+day(&quot;08/04/80&quot;, &quot;08/12/12&quot;)
+</code></pre>
+
+<pre><code>## $days
+## Time difference of 11696 days
+## 
+## $birthweek
+##  [1] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot;
+##  [8] &quot;星期二&quot; &quot;星期四&quot; &quot;星期五&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期二&quot; &quot;星期三&quot;
+## [15] &quot;星期四&quot; &quot;星期五&quot; &quot;星期日&quot; &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期五&quot;
+## [22] &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期五&quot; &quot;星期六&quot;
+## [29] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot;
+## 
+</code></pre>
+
+<pre><code class="r">
+day(&quot;08/04/80&quot;, &quot;08/04/90&quot;)
+</code></pre>
+
+<pre><code>## $days
+## Time difference of 3652 days
+## 
+## $birthweek
+##  [1] &quot;星期一&quot; &quot;星期二&quot; &quot;星期三&quot; &quot;星期四&quot; &quot;星期六&quot; &quot;星期日&quot; &quot;星期一&quot;
+##  [8] &quot;星期二&quot; &quot;星期四&quot; &quot;星期五&quot; &quot;星期六&quot;
+## 
+</code></pre>
+
+<p>HAPPY！</p>
 
 </body>
 
