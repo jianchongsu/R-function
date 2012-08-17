@@ -35,7 +35,7 @@ day("08/04/80", format(Sys.Date(), "%m/%d/%y"))
 
 ```
 ## $days
-## Time difference of 11696 days
+## Time difference of 11701 days
 ## 
 ## $birthweek
 ##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
@@ -106,7 +106,7 @@ day("08/04/80")
 
 ```
 ## $days
-## Time difference of 11696 days
+## Time difference of 11701 days
 ## 
 ## $birthweek
 ##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
@@ -149,5 +149,161 @@ day("08/04/80", "08/04/90")
 ##  [8] "星期二" "星期四" "星期五" "星期六"
 ## 
 ```
+
+## (2012.8.17)补充改进
+> 学习了***lubridate***之后，发现可以改进第二个问题了
+
+利用该包中的*ymd()* 可以将各种的时间格式变成该包中统一的 
+***POSIXct***格式。
+所以直接修改程序如下：
+
+
+
+
+```r
+
+day = function(d1, d2 = format(Sys.Date(), "%y/%m/%d")) {
+    library(lubridate)
+    d1 = as.character(d1)
+    d2 = as.character(d2)
+    D1 = ymd(d1)
+    D2 = ymd(d2)
+    
+    abs(D2 - D1)
+    birth = as.Date(min(D1, D2))
+    now = as.Date(max(D1, D2))
+    births = seq(from = birth, to = now, by = "1 year")
+    list(days = abs(D2 - D1), birthweek = weekdays(births))
+}
+```
+
+**举例**
+
+```r
+day("80/08/04")
+```
+
+```
+## Attaching package: 'lubridate'
+```
+
+```
+## The following object(s) are masked _by_ '.GlobalEnv':
+## 
+## day
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## $days
+## Time difference of 11701 days
+## 
+## $birthweek
+##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
+##  [8] "星期二" "星期四" "星期五" "星期六" "星期日" "星期二" "星期三"
+## [15] "星期四" "星期五" "星期日" "星期一" "星期二" "星期三" "星期五"
+## [22] "星期六" "星期日" "星期一" "星期三" "星期四" "星期五" "星期六"
+## [29] "星期一" "星期二" "星期三" "星期四" "星期六"
+## 
+```
+
+```r
+# 今天是12年8月17日
+day("80/08/04", "12/08/17")
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## $days
+## Time difference of 11701 days
+## 
+## $birthweek
+##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
+##  [8] "星期二" "星期四" "星期五" "星期六" "星期日" "星期二" "星期三"
+## [15] "星期四" "星期五" "星期日" "星期一" "星期二" "星期三" "星期五"
+## [22] "星期六" "星期日" "星期一" "星期三" "星期四" "星期五" "星期六"
+## [29] "星期一" "星期二" "星期三" "星期四" "星期六"
+## 
+```
+
+```r
+day("1980/08/04")
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## $days
+## Time difference of 11701 days
+## 
+## $birthweek
+##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
+##  [8] "星期二" "星期四" "星期五" "星期六" "星期日" "星期二" "星期三"
+## [15] "星期四" "星期五" "星期日" "星期一" "星期二" "星期三" "星期五"
+## [22] "星期六" "星期日" "星期一" "星期三" "星期四" "星期五" "星期六"
+## [29] "星期一" "星期二" "星期三" "星期四" "星期六"
+## 
+```
+
+```r
+# 时间分割用“/”或者“-”都可以
+day("1980-08-04")
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## $days
+## Time difference of 11701 days
+## 
+## $birthweek
+##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
+##  [8] "星期二" "星期四" "星期五" "星期六" "星期日" "星期二" "星期三"
+## [15] "星期四" "星期五" "星期日" "星期一" "星期二" "星期三" "星期五"
+## [22] "星期六" "星期日" "星期一" "星期三" "星期四" "星期五" "星期六"
+## [29] "星期一" "星期二" "星期三" "星期四" "星期六"
+## 
+```
+
+```r
+day("80/08/04", "90/08/04")
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## Multiple format matches with 1 successes: %y/%m/%d, %Y/%m/%d.
+```
+
+```
+## $days
+## Time difference of 3652 days
+## 
+## $birthweek
+##  [1] "星期一" "星期二" "星期三" "星期四" "星期六" "星期日" "星期一"
+##  [8] "星期二" "星期四" "星期五" "星期六"
+## 
+```
+
 
 HAPPY！
